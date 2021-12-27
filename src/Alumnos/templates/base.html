@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html>
+    <body>
+        <hr>
+        <h1>{% block title %}{% endblock %}</h1>
+        {% block content %}
+        {% endblock %}
+        <hr>
+        <br>
+        {{ now|date:"d/m/Y h:m" }}
+        <br>
+        {{ name }}
+        <img src={% static "img/pyhton.jpeg"%} height="80px" width="80px"/>
+       
+    </body>
+</html>
