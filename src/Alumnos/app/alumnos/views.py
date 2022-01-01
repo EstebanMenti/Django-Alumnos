@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 import datetime
@@ -12,7 +13,7 @@ def add_alumno(request):
     response = {'status': 'OK'}
     return JsonResponse(response)
 
-
+@login_required
 def get_alumnos(request):
     alumnos = Alumno.objects.all()
     
@@ -36,11 +37,18 @@ def get_alumnos(request):
     html += '</body></html>'
     return HttpResponse(html)
     """
-
+@login_required
 def alumno(request, id_alumno):
     alumno = Alumno.objects.get(pk=id_alumno)
+    form = AlumnoForm( instance=alumno )
+    if( request.method == 'POST'):
+        form = AlumnoForm(request.POST, instance = alumno)
+        if( form.is_valid()):
+            form.save(commit=True)    
     return render(request, 'alumno_detail.html',
-                  context={'alumno': alumno})
+                  context={'alumno': alumno,
+                           'form': form})
+
     #html = '<html><body><h1>Alumnos<H1>'
     #html += f'<p>Apellido: {alumno.last_name}</p>'docker
     #html += f'<p>Nombre: {alumno.first_name}</p>' 

@@ -9,5 +9,16 @@
     <p>Nombre: {{ alumno.first_name }}</p>
     <p>curso: {{ alumno.curso }}</p>
     <p>Fecha Nacimiento: {{ alumno.birthday }}</p>
+    {% if request.user.id == 1 %}
+        <form method='POST' action="/alumnos/{{alumno.id}}">
+            {% csrf_token %}
+            {{form}}
+            <p>Fecha creacion: {{ form.instance.date_create }}</p>
+            <p>Fecha modificacion: {{ form.instance.last_update }}</p>
+            <button type='submit'>Enviar</button>
+        </form>
+    {% endif %}
+    
     <a href="/alumno/delete/{{alumno.id}}">Borrar alumno</a>
+
 {% endblock %}

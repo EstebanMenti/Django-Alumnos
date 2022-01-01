@@ -29,6 +29,8 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+LOGIN_REDIRECT_URL = '/alumnos'
+LOGOUT_REDIRECT_URL = '/alumnos'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
