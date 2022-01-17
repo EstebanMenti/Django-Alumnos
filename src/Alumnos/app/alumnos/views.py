@@ -13,44 +13,40 @@ def add_alumno(request):
     response = {'status': 'OK'}
     return JsonResponse(response)
 
-@login_required
+#@login_required
 def get_alumnos(request):
     alumnos = Alumno.objects.all()
-    
-    form = AlumnoForm( request.POST )
     error = False
-    if( form.is_valid() ):
-        form.save( commit = True)
+    # if this is a POST request we need to process the form data
+    if( request.method == 'POST'):
+        # create a form instance and populate it with data from the request:
+        form = AlumnoForm( request.POST )
+        # check whether it's valid:
+        if( form.is_valid() ):
+            form.save( commit = True)
+        else:
+            error = True
+    # if a GET (or any other method) we'll create a blank form
     else:
-       error = True
-    
-
+        form = AlumnoForm( )
     
     return render( request, 'alumno_list.html',
             context={'alumnos': alumnos,
                      'now': datetime.datetime.now(),
-                     'form': form})
-    """
-    html = '<html><body><h1>Alumnos<H1>'
-    for item in alumnos:
-        html += f'<p><a href="/alumnos/{item.id}">{item.last_name}, {item.first_name}</a></p>'
-    html += '</body></html>'
-    return HttpResponse(html)
-    """
+                     'form': form,
+                     'error':error})
+
 @login_required
 def alumno(request, id_alumno):
     alumno = Alumno.objects.get(pk=id_alumno)
     form = AlumnoForm( instance=alumno )
+
     if( request.method == 'POST'):
         form = AlumnoForm(request.POST, instance = alumno)
         if( form.is_valid()):
-            form.save(commit=True)    
+            form.save(commit=True)
+    
     return render(request, 'alumno_detail.html',
                   context={'alumno': alumno,
                            'form': form})
 
-    #html = '<html><body><h1>Alumnos<H1>'
-    #html += f'<p>Apellido: {alumno.last_name}</p>'docker
-    #html += f'<p>Nombre: {alumno.first_name}</p>' 
-    #html += '</body></html>'
-    #return HttpResponse(html)
