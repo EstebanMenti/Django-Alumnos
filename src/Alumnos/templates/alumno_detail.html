@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Detalle de Alumnos
+{% endblock %}
+
+{% block col_a %}
+
+    <p>Apellido: {{ alumno.last_name }}</p>
+    <p>Nombre: {{ alumno.first_name }}</p>
+    <p>curso: {{ alumno.curso }}</p>
+    <p>Fecha Nacimiento: {{ alumno.birthday }}</p>
+    <p>Fecha creacion: {{ form.instance.date_create }}</p>
+    <p>Fecha modificacion: {{ form.instance.last_update }}</p>
+{% endblock %}
+
+{% block col_b %}
+    {% if request.user.id == 1 %}
+        <form method='POST' action="/alumnos/{{alumno.id}}/">
+            {% csrf_token %}
+            {{form}}
+            <br>
+            <button type='submit'; class="btn btn-primary" style="margin-bottom: 10px">Actualizar</button>        
+        </form>
+    {% endif %}
+    
+    <br>
+    <!-- <button class="btn btn-primary"><a href="/alumnos/"></a>Borrar</button> -->
+    <!-- <button name="button" type="submit" onclick= href ="/alumnos/"> Send</button> -->
+
+    <a href="/alumno/delete/{{alumno.id}}">Borrar alumno</a>
+
+{% endblock %}
